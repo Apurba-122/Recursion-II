@@ -1,1 +1,70 @@
+public class solution 
+{
+    
+    public static int[][] subsetsOfArray(int input[],int index) {
+        //Base case, When index= length of array; That means there is no element, So, Return empty 
+        //And for this empty element, creat a space of Output 2D jagged array
+        if(index==input.length){
+            int Output[][]=new int[1][0];           //At 1st Row with Zero column
+            return Output;
+        }
+        //Call Recursion For the every index of the given array
+        int[][] smallOutput=subsetsOfArray(input,index+1);
+
+        //Creat Space for subSet elements in 2D Output array for n-1 element
+        int[][] Output=new int[smallOutput.length*2][];
+
+        int k=0;        //K is a pointer, which is serially move with store element at 2D array
+
+        for(int i=0;i<smallOutput.length;i++){
+            Output[k]=new int[smallOutput[i].length]; // smallOutput[i].length= no of columns of ith rows
+            for(int j=0;j<smallOutput[i].length;j++){
+                Output[k][j]=smallOutput[i][j];
+            }
+            k++;
+        }
+        //This loop for the  1st element
+        for(int i=0;i<smallOutput.length;i++){ 
+          Output[k+i]=new int[smallOutput[i].length+1];
+          Output[k+i][0]=input[index];
+            for(int j=1;j<=smallOutput[i].length;j++){
+                Output[i+k][j]=smallOutput[i][j-1];
+            } 
+       
+        }
+        
+        return Output;
+    }
+    public static int[][] subsets(int input[]){
+        return subsetsOfArray(input,0);
+    }
+}
+
+//Runner
+
+import java.util.Scanner;
+
+public class runner {
+	
+	public static int[] takeInput() {
+		Scanner s = new Scanner(System.in);
+		int size = s.nextInt();
+		int arr[] = new int[size];
+		for (int i = 0; i < size; i++) {
+			arr[i] = s.nextInt();
+		}
+		return arr;
+	}
+	
+	public static void main(String[] args) {
+		int[] input = takeInput();
+		int output[][] = solution.subsets(input);
+		for(int i = 0; i < output.length; i++) {
+			for(int j = 0; j < output[i].length; j++) {
+				System.out.print(output[i][j] + " ");
+			}
+			System.out.println();
+		}
+	}
+}
 
